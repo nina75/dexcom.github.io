@@ -1,27 +1,56 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>-->
     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="./node_modules/font-awesome/css/font-awesome.css">
     <link rel="stylesheet" href="./node_modules/tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min.css" />
+    <link rel="stylesheet" href="./assets/css/index.css" />
   </head>
   <body>
     
-    <div class="container">
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="form-group">
-                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
-                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
-                </div>
+    <div class="container content">
+      <div class="row">
+        <div class="col-sm-8 offset-sm-2">
+          <div class="card">
+            <div class="card-header">
+              Average EGVS
             </div>
+            <div class="card p-4 text-center display-4 average-egvs js-average-egvs"><i class="fa fa-spinner fa-spin"></i></div>
+            <div class="card-body">
+              <form id="form-egvs">
+                <div class="row">
+                  <div class="form-group col-sm-5">
+                    <div class="input-group date" id="dp-start-date" data-target-input="nearest">
+                      <input type="text" name="startDate" class="form-control datetimepicker-input" data-target="#dp-start-date"/>
+                      <div class="input-group-append" data-target="#dp-start-date" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group col-sm-5">
+                    <div class="input-group date" id="dp-end-date" data-target-input="nearest">
+                      <input type="text" name="endDate" class="form-control datetimepicker-input" data-target="#dp-end-date"/>
+                      <div class="input-group-append" data-target="#dp-end-date" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group col-sm-2">
+                    <button type="submit" class="btn btn-primary pull-right js-btn-fetch-egvs">Fetch</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
+    
+    <template id="spiner-html">
+      <i class="fa fa-spinner fa-spin"></i>
+    </template>
     
     
     
