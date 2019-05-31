@@ -1,0 +1,25 @@
+{
+  "name": "dexcom",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nina75/dexcom.git"
+  },
+  "author": "BM",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nina75/dexcom/issues"
+  },
+  "homepage": "https://github.com/nina75/dexcom#readme",
+  "dependencies": {
+    "bootstrap": "^4.3.1",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.4.1",
+    "tempusdominus-bootstrap-4": "^5.1.2"
+  }
+}
