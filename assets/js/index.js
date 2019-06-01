@@ -6,13 +6,13 @@ $(function () {
     
     $('#dp-start-date').datetimepicker({
       locale: 'bg',
-      format: 'DD-MM-YYYY HH:mm:ss',
-      defaultDate: moment(new Date(), 'DD-MM-YYYY HH:mm:ss').subtract(7,'d'),
+      format: 'DD.MM.YYYY HH:mm:ss',
+      defaultDate: moment(new Date(), 'DD.MM.YYYY HH:mm:ss').subtract(7,'d'),
     });
     
     $('#dp-end-date').datetimepicker({
       locale: 'bg',
-      format: 'DD-MM-YYYY HH:mm:ss',
+      format: 'DD.MM.YYYY HH:mm:ss',
       defaultDate: new Date(),
     });
     
@@ -22,10 +22,12 @@ $(function () {
       
       $('.js-average-egvs').html(spinner);
       
-      const startDate = moment( $('[name=startDate]', formEgvs).val(), 'DD-MM-YYYY HH:mm:ss', true ).format('YYYY-MM-DD\TH:m:s');
-      const endDate = moment( $('[name=endDate]', formEgvs).val(), 'DD-MM-YYYY HH:mm:ss', true ).format('YYYY-MM-DD\TH:m:s');
+      let startDate = moment( $('[name=startDate]', formEgvs).val(), 'DD.MM.YYYY HH:mm:ss', true ).format('YYYY-MM-DD\TH:m:s');      
+      let utcStartDate = moment(startDate).utc().format('YYYY-MM-DD\THH:mm:ss');
+      let endDate = moment( $('[name=endDate]', formEgvs).val(), 'DD.MM.YYYY HH:mm:ss', true ).format('YYYY-MM-DD\TH:m:s');
+      let utcEndDate = moment(endDate).utc().format('YYYY-MM-DD\THH:mm:ss');
       
-      getEgvs( uri, {startDate: startDate, endDate: endDate} );
+      getEgvs( uri, {startDate: utcStartDate, endDate: utcEndDate} );
 
     });
     
