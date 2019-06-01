@@ -17,15 +17,6 @@ $(function () {
     });
     
     
-    (function() {
-      
-      const startDate = moment( $('[name=startDate]', formEgvs).val(), 'DD-MM-YYYY HH:mm:ss', true ).format('YYYY-MM-DD\TH:m:s');
-      const endDate = moment( $('[name=endDate]', formEgvs).val(), 'DD-MM-YYYY HH:mm:ss', true ).format('YYYY-MM-DD\TH:m:s');
-      
-      getEgvs( uri, {startDate: startDate, endDate: endDate} );
-    })();
-    
-    
     $('.js-btn-fetch-egvs', formEgvs).on('click', function (e) {
       e.preventDefault();
       
