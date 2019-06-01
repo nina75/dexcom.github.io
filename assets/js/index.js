@@ -1,6 +1,6 @@
 $(function () {
     
-    const uri = 'https://summertime-sadness.herokuapp.com/api/dexcom/egvs';
+    const uri = route('sts', 'egvs');
     const formEgvs = $('#form-egvs');
     const spinner = $('#spiner-html').html();
     
