@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>-->
     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="./node_modules/font-awesome/css/font-awesome.css">
     <link rel="stylesheet" href="./node_modules/tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min.css" />
@@ -45,24 +45,25 @@
             </div>
           </div>
         </div>
+        <div class="col-sm-12">
+          <div class="egvs-chart-wrapper">
+            <canvas id="egvsChart"></canvas>
+          </div>
+        </div>
       </div>
+      <!--row-->
     </div>
+    <!--container-->
     
     <template id="spiner-html">
       <i class="fa fa-spinner fa-spin"></i>
     </template>
     
-    
-    
-<!--
-    <div id="chart_div" style="width: 100%; height: 500px;"></div>
--->
-
-
     <script src="./node_modules/jquery/dist/jquery.min.js"></script>
     <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="./node_modules/moment/moment.js"></script>
     <script type="text/javascript" src="./node_modules/tempusdominus-bootstrap-4/build/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="./node_modules/chart.js/dist/Chart.min.js"></script>
     <script src="./assets/js/common.js"></script>
     <script src="./assets/js/index.js"></script>
   </body>

@@ -3,6 +3,61 @@ $(function () {
     const uri = route('sts', 'egvs');
     const formEgvs = $('#form-egvs');
     const spinner = $('#spiner-html').html();
+    const ctx = document.getElementById('egvsChart').getContext('2d');
+    
+    let chartConfig = {
+       //The type of chart we want to create
+      type: 'line',
+
+       //The data for our dataset
+      data: {
+          labels: [],
+          datasets: [],
+      },
+
+       //Configuration options goes here
+      options: {
+        responsive: true,
+        legend: {
+          display: false,
+        },
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true,
+              steps: 10,
+              stepValue: 5,
+              max: 400,
+            }
+          }]
+        }
+      }
+    };
+    let datasets = {
+      egvs: {
+        label: 'EGVS',
+        fill: false,
+        borderColor: 'rgb(0, 0, 0)',
+        backgroundColor: 'rgb(0, 0, 0)',
+        data: [],
+      }, 
+      high: {
+        label: 'High',
+        fill: true,
+        backgroundColor: 'rgba(128, 255, 128, 0.3)',
+        borderColor: 'rgba(255, 0, 0, 0.5)',
+        data: [],
+        pointRadius: 0,
+      }, 
+      low: {
+        label: 'Low',
+        borderColor: 'rgb(255, 0, 0)',
+        backgroundColor: 'rgba(255, 0, 0, 0.5)',
+        data: [],
+        pointRadius: 0,
+      }
+    };
+    
     
     $('#dp-start-date').datetimepicker({
       locale: 'bg',
@@ -15,17 +70,17 @@ $(function () {
       format: 'DD.MM.YYYY HH:mm:ss',
       defaultDate: new Date(),
     });
-    
-    
+        
     $('.js-btn-fetch-egvs', formEgvs).on('click', function (e) {
       e.preventDefault();
       
       $('.js-average-egvs').html(spinner);
       
-      let startDate = moment( $('[name=startDate]', formEgvs).val(), 'DD.MM.YYYY HH:mm:ss', true ).format('YYYY-MM-DD\TH:m:s');      
-      let utcStartDate = moment(startDate).utc().format('YYYY-MM-DD\THH:mm:ss');
+      let startDate = moment( $('[name=startDate]', formEgvs).val(), 'DD.MM.YYYY HH:mm:ss', true ).format('YYYY-MM-DD\TH:m:s');
+      let utcStartDate = moment(startDate, 'YYYY-MM-DD\THH:mm:ss').utc().format('YYYY-MM-DD\THH:mm:ss');
+      
       let endDate = moment( $('[name=endDate]', formEgvs).val(), 'DD.MM.YYYY HH:mm:ss', true ).format('YYYY-MM-DD\TH:m:s');
-      let utcEndDate = moment(endDate).utc().format('YYYY-MM-DD\THH:mm:ss');
+      let utcEndDate = moment(endDate, 'YYYY-MM-DD\THH:mm:ss').utc().format('YYYY-MM-DD\THH:mm:ss');
       
       getEgvs( uri, {startDate: utcStartDate, endDate: utcEndDate} );
 
@@ -45,41 +100,45 @@ $(function () {
 
           const egvs = response.data.egvs;
           let average = 0;
+          let dataValue = {};
 
-          for(let i = 0; i < egvs.length; i++) {
+          for (let i = egvs.length - 1; i >= 0; i--) {
+            
+            let cDay = moment(egvs[i]['displayTime'], 'YYYY-MM-DD\THH:mm:ss', true).format('DD.MM');
+            
+            if ( dataValue[cDay] ) {
+              dataValue[cDay]['value'] += egvs[i]['value'];
+              dataValue[cDay]['len']++;
+            } else {
+              dataValue[cDay] = {};
+              dataValue[cDay]['value'] = egvs[i]['value'];
+              dataValue[cDay]['len'] = 1;
+              
+              chartConfig.data.labels.push(cDay);
+              datasets.high.data.push(180);
+              datasets.low.data.push(50);
+            }
             
             average += egvs[i]['value'];
           }
+          
+          chartConfig.data.labels.forEach(function(label) {
+            
+            datasets.egvs.data.push( Math.round(dataValue[label]['value']/dataValue[label]['len']) );
+          });
+          
+          Object.keys(datasets).forEach(function(key) {
+            
+            chartConfig.data.datasets.push(datasets[key]);
+          });
 
           $('.js-average-egvs').html( Math.round(average/egvs.length) );
+          
+          const chart = new Chart(ctx, chartConfig);
         }
       }).fail(function (error) {
-        console.log('------error-----')
         console.log(error);
-        console.log('------end error------');
       });
     }
+    
 });
-
-//~ google.charts.load('current', {'packages':['corechart']});
-      //~ google.charts.setOnLoadCallback(drawChart);
-
-      //~ function drawChart() {
-        //~ var data = google.visualization.arrayToDataTable([
-          //~ ['Year', 'Sales', 'Expenses'],
-          //~ ['2013',  1000,      400],
-          //~ ['2014',  1170,      460],
-          //~ ['2015',  660,       1120],
-          //~ ['2016',  1030,      540]
-        //~ ]);
-
-        //~ var options = {
-          //~ title: 'Company Performance',
-          //~ hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},
-          //~ vAxis: {minValue: 0}
-        //~ };
-
-        //~ var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
-        //~ chart.draw(data, options);
-      //~ }
-      
