@@ -70,6 +70,20 @@ $(function () {
       format: 'DD.MM.YYYY HH:mm:ss',
       defaultDate: new Date(),
     });
+    
+    $('#dp-start-date,#dp-end-date').on('change.datetimepicker', function(e) {
+      
+      $('input', e.currentTarget).blur().removeAttr('readonly', 'readonly');
+    });
+    
+    $('[name=startDate],[name=endDate]').on('focus', function(e) {
+      
+      if ( $('.bootstrap-datetimepicker-widget').length > 0 ) {
+        
+        $(e.currentTarget).attr('readonly', 'readonly');
+      }
+    });
+    
         
     $('.js-btn-fetch-egvs', formEgvs).on('click', function (e) {
       e.preventDefault();
