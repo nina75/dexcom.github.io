@@ -84,11 +84,15 @@ $(function () {
       }
     });
     
+    $('[name=startDate],[name=endDate]').on('focusout', function(e) {
+      $(e.currentTarget).removeAttr('readonly');
+    });
+    
         
     $('.js-btn-fetch-egvs', formEgvs).on('click', function (e) {
       e.preventDefault();
       
-      $('.js-average-egvs').html(spinner);
+      $(e.currentTarget).html(spinner);
       
       let startDate = moment( $('[name=startDate]', formEgvs).val(), 'DD.MM.YYYY HH:mm:ss', true ).format('YYYY-MM-DD\TH:m:s');
       let utcStartDate = moment(startDate, 'YYYY-MM-DD\THH:mm:ss').utc().format('YYYY-MM-DD\THH:mm:ss');
@@ -145,8 +149,14 @@ $(function () {
             
             chartConfig.data.datasets.push(datasets[key]);
           });
+          
+          let averageEgvs = average / egvs.length;
 
-          $('.js-average-egvs').html( Math.round(average/egvs.length) );
+          $('.js-average-egvs-mmol').html( Number.parseFloat(averageEgvs/18).toFixed(1) );
+          $('.js-average-egvs-mg').html( Math.round(averageEgvs) );
+          $('.js-average-egvs-container').removeClass('d-none');
+          
+          $('.js-btn-fetch-egvs', formEgvs).html('Fetch');
           
           const chart = new Chart(ctx, chartConfig);
         }
