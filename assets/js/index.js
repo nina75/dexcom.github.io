@@ -24,10 +24,12 @@ $(function () {
         scales: {
           yAxes: [{
             ticks: {
-              beginAtZero: true,
-              steps: 10,
-              stepValue: 5,
-              max: 400,
+              min: 0,
+              callback: function(value, index, values) {
+                if (Math.floor(value) === value) {
+                    return value;
+                }
+              }
             }
           }]
         }
@@ -133,16 +135,17 @@ $(function () {
               dataValue[cDay]['len'] = 1;
               
               chartConfig.data.labels.push(cDay);
-              datasets.high.data.push(180);
-              datasets.low.data.push(50);
+              datasets.high.data.push(10);
+              datasets.low.data.push(3);
             }
             
             average += egvs[i]['value'];
           }
           
           chartConfig.data.labels.forEach(function(label) {
+            let mg = dataValue[label]['value']/dataValue[label]['len'];
             
-            datasets.egvs.data.push( Math.round(dataValue[label]['value']/dataValue[label]['len']) );
+            datasets.egvs.data.push( Number.parseFloat(mg/18).toFixed(1) );
           });
           
           Object.keys(datasets).forEach(function(key) {
