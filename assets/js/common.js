@@ -5,7 +5,8 @@ function route(originKey, pathKey) {
       sts: 'https://summertime-sadness.herokuapp.com'
     },
     path: {
-      egvs: '/api/dexcom/egvs'
+      egvs: '/api/dexcom/egvs',
+      latest: '/api/sugarmate/latest'
     }
   };
   

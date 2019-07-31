@@ -1,9 +1,15 @@
 $(function () {
     
+    (function() {
+      getLatest();
+    })();
+    
+    
     const uri = route('sts', 'egvs');
     const formEgvs = $('#form-egvs');
-    const spinner = $('#spiner-html').html();
-    const ctx = document.getElementById('egvsChart').getContext('2d');
+    const spinner = $('#spinner-html').html();
+    const mmolChart = document.getElementById('mmolChart').getContext('2d');
+    const mgChart = document.getElementById('mgChart').getContext('2d');
     
     let chartConfig = {
        //The type of chart we want to create
@@ -35,6 +41,7 @@ $(function () {
         }
       }
     };
+    
     let datasets = {
       egvs: {
         label: 'EGVS',
@@ -59,6 +66,8 @@ $(function () {
         pointRadius: 0,
       }
     };
+    
+    let mgDatasets = $.extend(true, {}, datasets);
     
     
     $('#dp-start-date').datetimepicker({
@@ -107,6 +116,54 @@ $(function () {
     });
     
     
+    $('.js-btn-units').on('click', function(e) {
+      e.preventDefault();
+      
+      $('.js-btn-units').removeClass('btn-success');
+      
+      $(e.currentTarget).addClass('btn-success');
+      
+      $('.units').addClass('d-none');
+      $('.js-average-egvs').addClass('d-none');
+      
+      
+      $( '.js-latest-' + e.currentTarget.dataset.unit ).closest('.units').removeClass('d-none');
+      
+      $( '.js-average-egvs-' + e.currentTarget.dataset.unit ).closest('.js-average-egvs').removeClass('d-none');
+      
+      $('div[class^=js-chart-container]').addClass('d-none');
+      
+      $( '.js-chart-container-' + e.currentTarget.dataset.unit ).removeClass('d-none');
+      
+    });
+    
+    
+    $('#btn-reload-latest').on('click', function() {
+      
+      $('p[class*="js-latest"]').html(spinner);
+      
+      getLatest();
+      
+    });
+    
+    
+    function getLatest() {
+      
+      $.ajax({
+        type: "GET",
+        url: route('sts', 'latest'),
+        cache: false,
+      }).done(function (response) {
+        
+        if(response.success)
+        
+        $('.js-latest-mmol').html(response.data.mmol + ' ' + response.data.trend_symbol + ' ' + response.data.time);
+        $('.js-latest-mg').html(response.data.value + ' ' + response.data.trend_symbol + ' ' + response.data.time);
+      });
+      
+    }
+    
+    
     function getEgvs(url, data) {
 
       $.ajax({
@@ -135,22 +192,33 @@ $(function () {
               dataValue[cDay]['len'] = 1;
               
               chartConfig.data.labels.push(cDay);
+              //mgChartConfig.data.labels.push(cDay);
+              
               datasets.high.data.push(10);
               datasets.low.data.push(3);
+              
+              mgDatasets.high.data.push(180);
+              mgDatasets.low.data.push(50);
             }
             
             average += egvs[i]['value'];
           }
           
+          
+          let mgChartConfig = $.extend(true, {}, chartConfig);
+          
+          
           chartConfig.data.labels.forEach(function(label) {
             let mg = dataValue[label]['value']/dataValue[label]['len'];
             
             datasets.egvs.data.push( Number.parseFloat(mg/18).toFixed(1) );
+            mgDatasets.egvs.data.push( Math.round(mg) );
           });
           
           Object.keys(datasets).forEach(function(key) {
             
             chartConfig.data.datasets.push(datasets[key]);
+            mgChartConfig.data.datasets.push(mgDatasets[key]);
           });
           
           let averageEgvs = average / egvs.length;
@@ -161,7 +229,10 @@ $(function () {
           
           $('.js-btn-fetch-egvs', formEgvs).html('Fetch');
           
-          const chart = new Chart(ctx, chartConfig);
+          
+          const chart = new Chart(mmolChart, chartConfig);
+          const mgLChart = new Chart(mgChart, mgChartConfig);
+          
         }
       }).fail(function (error) {
         console.log(error);
