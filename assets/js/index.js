@@ -192,7 +192,6 @@ $(function () {
               dataValue[cDay]['len'] = 1;
               
               chartConfig.data.labels.push(cDay);
-              //mgChartConfig.data.labels.push(cDay);
               
               datasets.high.data.push(10);
               datasets.low.data.push(3);
