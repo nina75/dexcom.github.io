@@ -51,3 +51,7 @@
 #btn-reload-latest:hover {
   cursor: pointer;
 }
+
+.average-contanier {
+  margin-bottom: 10px;
+}

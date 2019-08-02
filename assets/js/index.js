@@ -8,66 +8,7 @@ $(function () {
     const uri = route('sts', 'egvs');
     const formEgvs = $('#form-egvs');
     const spinner = $('#spinner-html').html();
-    const mmolChart = document.getElementById('mmolChart').getContext('2d');
-    const mgChart = document.getElementById('mgChart').getContext('2d');
-    
-    let chartConfig = {
-       //The type of chart we want to create
-      type: 'line',
-
-       //The data for our dataset
-      data: {
-          labels: [],
-          datasets: [],
-      },
-
-       //Configuration options goes here
-      options: {
-        responsive: true,
-        legend: {
-          display: false,
-        },
-        scales: {
-          yAxes: [{
-            ticks: {
-              min: 0,
-              callback: function(value, index, values) {
-                if (Math.floor(value) === value) {
-                    return value;
-                }
-              }
-            }
-          }]
-        }
-      }
-    };
-    
-    let datasets = {
-      egvs: {
-        label: 'EGVS',
-        fill: false,
-        borderColor: 'rgb(0, 0, 0)',
-        backgroundColor: 'rgb(0, 0, 0)',
-        data: [],
-      }, 
-      high: {
-        label: 'High',
-        fill: true,
-        backgroundColor: 'rgba(128, 255, 128, 0.3)',
-        borderColor: 'rgba(255, 0, 0, 0.5)',
-        data: [],
-        pointRadius: 0,
-      }, 
-      low: {
-        label: 'Low',
-        borderColor: 'rgb(255, 0, 0)',
-        backgroundColor: 'rgba(255, 0, 0, 0.5)',
-        data: [],
-        pointRadius: 0,
-      }
-    };
-    
-    let mgDatasets = $.extend(true, {}, datasets);
+    const templateCanvas = $('#template-canvas').html();
     
     
     $('#dp-start-date').datetimepicker({
@@ -166,6 +107,65 @@ $(function () {
     
     function getEgvs(url, data) {
 
+      let chartConfig = {
+        //The type of chart we want to create
+        type: 'line',
+
+         //The data for our dataset
+        data: {
+            labels: [],
+            datasets: [],
+        },
+
+         //Configuration options goes here
+        options: {
+          responsive: true,
+          legend: {
+            display: false,
+          },
+          scales: {
+            yAxes: [{
+              ticks: {
+                min: 0,
+                callback: function(value, index, values) {
+                  if (Math.floor(value) === value) {
+                      return value;
+                  }
+                }
+              }
+            }]
+          }
+        }
+      };
+      
+      let datasets = {
+        egvs: {
+          label: 'EGVS',
+          fill: false,
+          borderColor: 'rgb(0, 0, 0)',
+          backgroundColor: 'rgb(0, 0, 0)',
+          data: [],
+        }, 
+        high: {
+          label: 'High',
+          fill: true,
+          backgroundColor: 'rgba(128, 255, 128, 0.3)',
+          borderColor: 'rgba(255, 0, 0, 0.5)',
+          data: [],
+          pointRadius: 0,
+        }, 
+        low: {
+          label: 'Low',
+          borderColor: 'rgb(255, 0, 0)',
+          backgroundColor: 'rgba(255, 0, 0, 0.5)',
+          data: [],
+          pointRadius: 0,
+        }
+      };
+      
+      let mgDatasets = $.extend(true, {}, datasets);
+
+
       $.ajax({
         type: "GET",
         url: url,
@@ -227,6 +227,14 @@ $(function () {
           $('.js-average-egvs-container').removeClass('d-none');
           
           $('.js-btn-fetch-egvs', formEgvs).html('Fetch');
+          
+          
+          $('.js-chart-container-mmol').html( templateCanvas.replace('#canvasId#', 'mmolChart') );
+          $('.js-chart-container-mg').html( templateCanvas.replace('#canvasId#', 'mgChart') );
+          
+          
+          const mmolChart = document.getElementById('mmolChart').getContext('2d');
+          const mgChart = document.getElementById('mgChart').getContext('2d');
           
           
           const chart = new Chart(mmolChart, chartConfig);
