@@ -96,10 +96,20 @@ $(function () {
         cache: false,
       }).done(function (response) {
         
-        if(response.success)
+        var mmolCont = $('.js-latest-mmol');
+        var mgCont = $('.js-latest-mg');
         
-        $('.js-latest-mmol').html(response.data.mmol + ' ' + response.data.trend_symbol + ' ' + response.data.time);
-        $('.js-latest-mg').html(response.data.value + ' ' + response.data.trend_symbol + ' ' + response.data.time);
+        if(response.success) {
+          if (response.data.status == 'fail') {
+            mmolCont.html(response.data.error_message);
+            mgCont.html(response.data.error_message);
+          } else {
+            mmolCont.html(response.data.mmol + ' ' + response.data.trend_symbol + ' ' + response.data.time);
+            mgCont.html(response.data.value + ' ' + response.data.trend_symbol + ' ' + response.data.time);
+          }
+        }
+        
+        
       });
       
     }
