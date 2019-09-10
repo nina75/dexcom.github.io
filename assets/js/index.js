@@ -100,12 +100,12 @@ $(function () {
         var mgCont = $('.js-latest-mg');
         
         if(response.success) {
-          if (response.data.status == 'fail') {
-            mmolCont.html(response.data.error_message);
-            mgCont.html(response.data.error_message);
-          } else {
+          if (response.data.value) {
             mmolCont.html(response.data.mmol + ' ' + response.data.trend_symbol + ' ' + response.data.time);
             mgCont.html(response.data.value + ' ' + response.data.trend_symbol + ' ' + response.data.time);
+          } else {
+            mmolCont.html('No Results');
+            mgCont.html('No Results');
           }
         }
         
