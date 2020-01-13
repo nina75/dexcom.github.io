@@ -101,8 +101,10 @@ $(function () {
         
         if(response.success) {
           if (response.data.value) {
-            mmolCont.html(response.data.mmol + ' ' + response.data.trend_symbol + ' ' + response.data.time);
-            mgCont.html(response.data.value + ' ' + response.data.trend_symbol + ' ' + response.data.time);
+            let localTime = moment.utc(response.timestamp).local().format('HH:mm');
+            
+            mmolCont.html(response.data.mmol + ' ' + response.data.trend_symbol + ' ' + localTime);
+            mgCont.html(response.data.value + ' ' + response.data.trend_symbol + ' ' + localTime);
           } else {
             mmolCont.html('No Results');
             mgCont.html('No Results');
