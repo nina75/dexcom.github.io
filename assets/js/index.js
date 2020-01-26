@@ -101,7 +101,7 @@ $(function () {
         
         if(response.success) {
           if (response.data.value) {
-            let localTime = moment.utc(response.timestamp).local().format('HH:mm');
+            let localTime = moment.utc(response.data.timestamp, 'YYYY-MM-DDTHH:mm:ssZ').local().format('HH:mm');
             
             mmolCont.html(response.data.mmol + ' ' + response.data.trend_symbol + ' ' + localTime);
             mgCont.html(response.data.value + ' ' + response.data.trend_symbol + ' ' + localTime);
