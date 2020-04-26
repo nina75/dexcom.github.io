@@ -52,7 +52,7 @@ $(function () {
       let endDate = moment( $('[name=endDate]', formEgvs).val(), 'DD.MM.YYYY HH:mm:ss', true ).format('YYYY-MM-DD\TH:m:s');
       let utcEndDate = moment(endDate, 'YYYY-MM-DD\THH:mm:ss').utc().format('YYYY-MM-DD\THH:mm:ss');
       
-      getEgvs( uri, {startDate: utcStartDate, endDate: utcEndDate} );
+      getEgvs( uri, {startDate: utcStartDate, endDate: utcEndDate, user_id: User.getDora()} );
 
     });
     

@@ -12,3 +12,19 @@ function route(originKey, pathKey) {
   
   return routes.origin[originKey] + routes.path[pathKey];
 }
+
+var User = (function() {
+	
+	function getDora() {
+		return 10;
+	}
+	
+	function getVuchka() {
+		return 12;
+	}
+	
+	return {
+		getDora: getDora,
+		getVuchka: getVuchka
+	};
+})();
