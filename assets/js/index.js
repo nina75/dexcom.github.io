@@ -93,6 +93,7 @@ $(function () {
       $.ajax({
         type: "GET",
         url: route('sts', 'latest'),
+        data: {user_id: User.getVuchka()},
         cache: false,
       }).done(function (response) {
         
